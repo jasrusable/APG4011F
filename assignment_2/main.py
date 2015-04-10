@@ -39,7 +39,10 @@ def get_list_of_points_from_file(path='superset.xyz', delim=' '):
     return points
 
 def get_normal(points):
-    u, s, v = linalg.svd(points)
+    temp = []
+    for point in points:
+        temp.append([point.x, point.y, point.z])
+    u, s, v = linalg.svd(temp)
     return v[2]
 
 @log_timing('computed normals',logger)
@@ -51,7 +54,7 @@ def compute_normals(points):
             distances, indexs = kd_tree.query(point.to_xyz_list(), k=5)
             neighbors = []
             for index in indexs:
-                neighbors.append([points[index].x, points[index].y, points[index].z])
+                neighbors.append(points[index])
             # get_normal is very slow
             normal = get_normal(neighbors)
             point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
