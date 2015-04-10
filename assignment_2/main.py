@@ -52,6 +52,7 @@ def compute_normals(points):
             neighbors = []
             for index in indexs:
                 neighbors.append([points[index].x, points[index].y, points[index].z])
+            # get_normal is very slow
             normal = get_normal(neighbors)
             point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
     return points
@@ -64,7 +65,7 @@ def compute_angles(points):
     return points
 
 def dotproduct(v1, v2):
-    return sum((a*b) for a, b in zip(v1, v2))
+    return sum((a * b) for a, b in zip(v1, v2))
 
 def get_unit_length(v):
     return math.sqrt(dotproduct(v, v))
@@ -80,9 +81,9 @@ test_points = [
     Point(3,2,0,0,0,0,0),
     ]
 
-#superset_points = get_list_of_points_from_file('data/Lidar/jameson.xyz')
-n = compute_normals(test_points)
-a = compute_angles(n)
+superset_points = get_list_of_points_from_file('data/Lidar/jameson.xyz')
+n = compute_normals(superset_points)
+#a = compute_angles(n)
 #jameson_segmentation = Segmentation(1,3,0,10,0,11)
 #jameson_subset = Subset(superset_points, jameson_segmentation)
 #jameson_subset.write_subset_points_to_file('data/jameson_subset.xyz')
