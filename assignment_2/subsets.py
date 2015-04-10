@@ -14,9 +14,9 @@ class Subset(object):
     @log_timing('running segmentation', logger)
     def perform_segmentaion(self):
         for point in self.superset_points:
-            x = point[0]
-            y = point[1]
-            z = point[2]
+            x = point.x
+            y = point.y
+            z = point.y
             if (x > self.segmentation.x_min
                 and x < self.segmentation.x_max
                 and y > self.segmentation.y_min
@@ -29,4 +29,4 @@ class Subset(object):
     def write_subset_points_to_file(self, path='data/subset.xyz'):
         with open(path, 'w') as f:
             for point in self.points:
-                f.write(point)
+                f.write(point.to_line())
