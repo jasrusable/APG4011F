@@ -10,12 +10,12 @@ import scipy.linalg as linalg
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
+
 def points_to_list(points):
     list_of_points = []
     for point in points:
         list_of_points.append([point.x, point.y, point.z])
     return list_of_points
-
 
 @log_timing('getting points from file', logger)
 def get_list_of_points_from_file(path='superset.xyz', delim=' '):
@@ -51,7 +51,6 @@ def compute_normals(points):
         normal = get_normal(neighbors)
         point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
     return points
-
 
 test_points = [
     Point(0,0,0,0,0,0,0,None),
