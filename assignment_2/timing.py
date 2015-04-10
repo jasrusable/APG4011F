@@ -14,7 +14,7 @@ def log_timing(task_name, logger):
     return my_decorator
 
 
-class with_log_timing(object):
+class log_timing_(object):
     def __init__(self, task_name, logger):
         self.task_name = task_name
         self.logger = logger

@@ -1,5 +1,5 @@
 import logging
-from timing import log_timing, with_log_timing
+from timing import log_timing_, log_timing
 from subsets import Subset
 from points import Point, Vector
 from segmentation import Segmentation
@@ -10,7 +10,7 @@ import scipy.linalg as linalg
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-
+@log_timing('converting Points to lists',logger)
 def points_to_list(points):
     list_of_points = []
     for point in points:
@@ -42,15 +42,18 @@ def get_normal(points):
 
 @log_timing('compute normals',logger)
 def compute_normals(points):
-    kd_tree = cKDTree(points_to_list(points))
-    for point in points:
-        distances, indexs = kd_tree.query(point.to_xyz_list(), k=5)
-        neighbors = []
-        for index in indexs:
-            neighbors.append([points[index].x, points[index].y, points[index].z])
-        normal = get_normal(neighbors)
-        point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
+    with log_timing_('built tree', logger):
+        kd_tree = cKDTree(points_to_list(points))
+    with log_timing_('loop for computing normals', logger):
+        for point in points:
+            distances, indexs = kd_tree.query(point.to_xyz_list(), k=5)
+            neighbors = []
+            for index in indexs:
+                neighbors.append([points[index].x, points[index].y, points[index].z])
+            normal = get_normal(neighbors)
+            point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
     return points
+
 
 test_points = [
     Point(0,0,0,0,0,0,0,None),
@@ -60,7 +63,8 @@ test_points = [
     Point(3,2,0,0,0,0,0,None),
     ]
 
-superset_points = get_list_of_points_from_file('data/Lidar/jameson.xyz')
+#superset_points = get_list_of_points_from_file('data/Lidar/jameson.xyz')
+t = compute_normals(test_points)
 #jameson_segmentation = Segmentation(1,3,0,10,0,11)
 #jameson_subset = Subset(superset_points, jameson_segmentation)
 #jameson_subset.write_subset_points_to_file('data/jameson_subset.xyz')
