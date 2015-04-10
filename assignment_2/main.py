@@ -1,23 +1,25 @@
 import logging
+import math
+import scipy.linalg as linalg
 from timing import log_timing_, log_timing
 from subsets import Subset
 from points import Point, Vector
 from segmentation import Segmentation
 from scipy.spatial import cKDTree
-import scipy.linalg as linalg
 
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-@log_timing('converting Points to lists',logger)
+
+@log_timing('converted Points to lists',logger)
 def points_to_list(points):
     list_of_points = []
     for point in points:
         list_of_points.append([point.x, point.y, point.z])
     return list_of_points
 
-@log_timing('getting points from file', logger)
+@log_timing('read points from file', logger)
 def get_list_of_points_from_file(path='superset.xyz', delim=' '):
     points = []
     with open(path, 'r') as f:
@@ -40,7 +42,7 @@ def get_normal(points):
     u, s, v = linalg.svd(points)
     return v[2]
 
-@log_timing('compute normals',logger)
+@log_timing('computed normals',logger)
 def compute_normals(points):
     with log_timing_('built tree', logger):
         kd_tree = cKDTree(points_to_list(points))
@@ -54,17 +56,33 @@ def compute_normals(points):
             point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
     return points
 
+@log_timing('computed angles',logger)
+def compute_angles(points):
+    vert_vec = [0,0,1]
+    for point in points:
+        point.angle = math.degrees(float(get_angle(vert_vec, point.normal.to_xyz_list())))
+    return points
+
+def dotproduct(v1, v2):
+    return sum((a*b) for a, b in zip(v1, v2))
+
+def get_unit_length(v):
+    return math.sqrt(dotproduct(v, v))
+
+def get_angle(v1, v2):
+    return math.acos(dotproduct(v1, v2) / (get_unit_length(v1) * get_unit_length(v2)))
 
 test_points = [
-    Point(0,0,0,0,0,0,0,None),
-    Point(1,1,0,0,0,0,0,None),
-    Point(2,1,0,0,0,0,0,None),
-    Point(1,2,0,0,0,0,0,None),
-    Point(3,2,0,0,0,0,0,None),
+    Point(0,0,0,0,0,0,0),
+    Point(1,1,0,0,0,0,0),
+    Point(2,1,0,0,0,0,0),
+    Point(1,2,0,0,0,0,0),
+    Point(3,2,0,0,0,0,0),
     ]
 
 #superset_points = get_list_of_points_from_file('data/Lidar/jameson.xyz')
-t = compute_normals(test_points)
+n = compute_normals(test_points)
+a = compute_angles(n)
 #jameson_segmentation = Segmentation(1,3,0,10,0,11)
 #jameson_subset = Subset(superset_points, jameson_segmentation)
 #jameson_subset.write_subset_points_to_file('data/jameson_subset.xyz')
