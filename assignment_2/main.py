@@ -84,8 +84,8 @@ test_points = [
     Point(3,2,0,0,0,0,0),
     ]
 
-superset_points = get_list_of_points_from_file('data/Lidar/jameson.xyz')
-n = compute_normals(superset_points)
+jameson_subset = Subset(path='data/Lidar/jameson.xyz', path_line_delim=' ')
+n = compute_normals(jameson_subset.points)
 #a = compute_angles(n)
 #jameson_segmentation = Segmentation(1,3,0,10,0,11)
 #jameson_subset = Subset(superset_points, jameson_segmentation)
