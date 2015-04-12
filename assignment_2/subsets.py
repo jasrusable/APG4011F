@@ -1,20 +1,20 @@
 import logging
-from timing import log_timing
+from timing import log_timing, log_timing_
 from points import Point
-
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 class Subset(object):
-    def __init__(self, superset_points=None, segmentation=None, path='points.xyz', path_line_delim=' '):
-        self.segmentation = segmentation
-        self.superset_points = superset_points
-        self.points = []
-        self.path = path
-        self.path_line_delim = path_line_delim
-        if self.path:
+    def __init__(self, points=None, path=None, path_line_delim=' '):
+        if path and points:
+            raise Exception('Cannot create subset using points as well as a file.')
+        elif path and not points:
             self.load_points_from_file(path=path, line_delim=path_line_delim)
+        elif not path and points:
+            self.points = points
+        else:
+            logger.warn('Created empty subset.')
 
     @log_timing('loaded points from file', logger)
     def load_points_from_file(self, path='points.xyz', line_delim=' '):
@@ -35,20 +35,6 @@ class Subset(object):
                 points.append(point)
         self.path = path
         self.points = points
-
-    @log_timing('running segmentation', logger)
-    def perform_segmentaion(self):
-        for point in self.superset_points:
-            x = point.x
-            y = point.y
-            z = point.y
-            if (x > self.segmentation.x_min
-                and x < self.segmentation.x_max
-                and y > self.segmentation.y_min
-                and y < self.segmentation.y_max
-                and z > self.segmentation.z_min
-                and z < self.segmentation.z_max):
-                self.points.append(point)
 
     @log_timing('writing subset file', logger)
     def write_subset_points_to_file(self, path='data/subset.xyz'):
