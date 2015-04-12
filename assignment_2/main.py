@@ -4,29 +4,32 @@ from subsets import Subset
 from segmentation import Segmentation
 from points import Point
 from vectors import Vector
-from scipy.spatial import cKDTree
+from scipy.spatial import KDTree
 from utils import get_normal, get_angle, points_to_list
-
+from multiprocessing import Pool
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
+def compute_normals_((points, kd_tree)):
+    for point in points:
+        distances, indexs = kd_tree.query(point.to_xyz_list(), k=5)
+        neighbors = []
+        for index in indexs:
+            neighbors.append(points[index])
+        # get_normal is very slow
+        normal = get_normal(neighbors)
+        point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
+    return points
 
 @log_timing('computed normals',logger)
 def compute_normals(subset):
     resultant_subset = copy.copy(subset)
     points = resultant_subset.points
     with log_timing_('built tree', logger):
-        kd_tree = cKDTree(points_to_list(points))
-    with log_timing_('loop for computing normals', logger):
-        for point in points:
-            distances, indexs = kd_tree.query(point.to_xyz_list(), k=5)
-            neighbors = []
-            for index in indexs:
-                neighbors.append(points[index])
-            # get_normal is very slow
-            normal = get_normal(neighbors)
-            point.normal = Vector(x=normal[0], y=normal[1], z=normal[2])
+        kd_tree = KDTree(points_to_list(points))
+    p = Pool(1)
+    resultant_subset.points = p.map(compute_normals_, [[points, kd_tree]])[0]
     return resultant_subset
 
 @log_timing('computed angles',logger)
@@ -61,15 +64,20 @@ test_points = [
     Point(2,1,0,0,0,0,0),
     Point(1,2,0,0,0,0,0),
     Point(3,2,0,0,0,0,0),
+    Point(4,5,0,0,0,0,0),
+    Point(5,4,0,0,0,0,0),
+    Point(7,3,0,0,0,0,0),
+    Point(8,2,0,0,0,0,0),
+    Point(9,2,0,0,0,0,0),
     ]
 
-#test_subset = Subset(points=test_points)
-#test_subset_normals = compute_normals(test_subset)
+test_subset = Subset(points=test_points)
+test_subset_normals = compute_normals(test_subset)
 #test_subset_angles = compute_angles(test_subset)
 
-jameson_subset = Subset(path='data/Lidar/jameson.xyz', path_line_delim=' ')
-jameson_subset_normal = compute_normals(jameson_subset)
-jameson_subset_angles = compute_angles(jameson_subset_normal)
+#jameson_subset = Subset(path='data/Lidar/jameson.xyz', path_line_delim=' ')
+#jameson_subset_normal = compute_normals(jameson_subset)
+#jameson_subset_angles = compute_angles(jameson_subset_normal)
 
 #a = compute_angles(n)
 #jameson_segmentation = Segmentation(1,3,0,10,0,11)
