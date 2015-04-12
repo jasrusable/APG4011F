@@ -29,7 +29,7 @@ def compute_normals(subset):
     with log_timing_('built tree', logger):
         kd_tree = KDTree(points_to_list(points))
     p = Pool(1)
-    resultant_subset.points = p.map(compute_normals_, [[points, kd_tree]])[0]
+    resultant_subset.points = map(compute_normals_, [[points, kd_tree]])[0]
     return resultant_subset
 
 @log_timing('computed angles',logger)
@@ -71,13 +71,13 @@ test_points = [
     Point(9,2,0,0,0,0,0),
     ]
 
-test_subset = Subset(points=test_points)
-test_subset_normals = compute_normals(test_subset)
+#test_subset = Subset(points=test_points)
+#test_subset_normals = compute_normals(test_subset)
 #test_subset_angles = compute_angles(test_subset)
 
-#jameson_subset = Subset(path='data/Lidar/jameson.xyz', path_line_delim=' ')
-#jameson_subset_normal = compute_normals(jameson_subset)
-#jameson_subset_angles = compute_angles(jameson_subset_normal)
+jameson_subset = Subset(path='data/Lidar/jameson.xyz', path_line_delim=' ')
+jameson_subset_normal = compute_normals(jameson_subset)
+jameson_subset_angles = compute_angles(jameson_subset_normal)
 
 #a = compute_angles(n)
 #jameson_segmentation = Segmentation(1,3,0,10,0,11)
