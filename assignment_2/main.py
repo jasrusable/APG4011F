@@ -76,10 +76,11 @@ test_points = [
 #test_subset_normals = compute_normals(test_subset)
 #test_subset_angles = compute_angles(test_subset)
 
-jameson_subset = Subset(path='data/jseg.txt', path_line_delim=' ')
-jameson_subset_normal = compute_normals(jameson_subset)
-jameson_subset_angles = compute_angles(jameson_subset_normal)
-jameson_subset_angles.write_subset_points_to_file()
+#subset = Subset(path='data/jseg.txt', path_line_delim=' ')
+subset = Subset(path='data/Lidar/jameson.xyz', path_line_delim=' ')
+subset = compute_normals(subset)
+subset = compute_angles(subset)
+subset.write_subset_points_to_file()
 
 #a = compute_angles(n)
 #jameson_segmentation = Segmentation(1,3,0,10,0,11)
