@@ -13,7 +13,7 @@ class Point(object):
         self.angle = angle
 
     def to_line(self):
-        return " ".join(self.x, self.y, self.z, self.angle)
+        return ", ".join([self.x, self.y, self.z, self.angle])
 
     def to_xyz_list(self):
         return [self.x, self.y, self.z]
