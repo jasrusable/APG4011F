@@ -4,14 +4,15 @@ from subsets import Subset
 from segmentation import Segmentation
 from points import Point
 from vectors import Vector
-from scipy.spatial import KDTree
+from scipy.spatial import cKDTree
 from utils import get_normal, get_angle, points_to_list
 from multiprocessing import Pool
+from itertools import starmap
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-def compute_normals_((points, kd_tree)):
+def compute_normals_(points, kd_tree):
     for point in points:
         distances, indexs = kd_tree.query(point.to_xyz_list(), k=5)
         neighbors = []
@@ -27,9 +28,9 @@ def compute_normals(subset):
     resultant_subset = copy.copy(subset)
     points = resultant_subset.points
     with log_timing_('built tree', logger):
-        kd_tree = KDTree(points_to_list(points))
+        kd_tree = cKDTree(points_to_list(points))
     p = Pool(1)
-    resultant_subset.points = map(compute_normals_, [[points, kd_tree]])[0]
+    resultant_subset.points = list(starmap(compute_normals_, [[points, kd_tree]]))[0]
     return resultant_subset
 
 @log_timing('computed angles',logger)
