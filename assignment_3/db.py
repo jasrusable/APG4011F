@@ -26,3 +26,6 @@ def create_all():
 	# Create all tables in the engine. This is equivalent to "Create Table"
 	# statements in raw SQL.
 	Base.metadata.create_all(engine)
+
+def drop_all():
+	Base.metadata.drop_all(engine)

@@ -1,16 +1,29 @@
 import sqlalchemy
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 import db
+import matplotlib
 
 from points import Point, ImagePoint, ObjectPoint
 from cameras import Camera
 from images import Image
 
-#db.create_all()
+db.drop_all()
+db.create_all()
 
-new_point = Point(x=2, y=4, z=10)
-db.session.add(new_point)
-db.session.commit()
+def init():
+	pass
 
+init()
 
-print(db.session.query(Point).all()[0].z)
+def plot(vectors, points):
+	fig = plt.figure()
+	ax = fig.add_subplot(1, 2, 1, projection='3d')
+	for point in points:
+		ax.scatter(point.x, point.y, point.z, c='r', marker='o')
+	plt.show()
+
+#plot(None, db.session.query(Point).all())
+c = Camera()
+i = Image()
