@@ -14,23 +14,25 @@ class ImagePoint(Base, Point):
     __tablename__ = 'image_point'
     id = Column(Integer, primary_key=True)
     image_id = Column(Integer, ForeignKey('image.id'))
-    image = relationship('Image', back_populates='image_points', cascade='save-update, merge')
+    image = relationship('Image', back_populates='image_points', 
+        cascade='save-update, merge')
 
-    def __init__(self, x, y, z, colour, marker):
+    def __init__(self, x, y, z, colour='b', marker='o'):
         Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)
 
 class ObjectPoint(Base, Point):
     __tablename__ = 'object_point'
     id = Column(Integer, primary_key=True)
 
-    def __init__(self, x, y, z, colour, marker):
+    def __init__(self, x, y, z, colour='k', marker='o'):
         Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)
 
 class PerspectiveCenterPoint(Base, Point):
     __tablename__ = 'perspective_center_point'
     id =Column(Integer, primary_key=True)
-    images = relationship('Image', back_populates='perspective_center', cascade='save-update, merge, delete, delete-orphan')
+    images = relationship('Image', back_populates='perspective_center', 
+        cascade='save-update, merge, delete, delete-orphan')
 
-    def __init__(self, x, y, z, colour, marker, images=list()):
+    def __init__(self, x, y, z, colour='r', marker='o', images=list()):
         self.images = images
         Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)

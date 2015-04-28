@@ -9,7 +9,8 @@ class Camera(Base):
 	focal_length = Column(Float, nullable=False, default=0.02)
 	width = Column(Float, nullable=False)
 	height = Column(Float, nullable=False)
-	images = relationship('Image', back_populates='camera', cascade='save-update, merge')
+	images = relationship('Image', back_populates='camera', 
+		cascade='save-update, merge')
 
 	def __init__(self, focal_length, width, height):
 		self.focal_length = focal_length
