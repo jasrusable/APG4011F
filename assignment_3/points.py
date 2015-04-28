@@ -2,31 +2,24 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Float
 from sqlalchemy.orm import relationship
 from db import Base
 
-""" I am using joined table inheritance here """
 
-class Point(Base):
-    __tablename__ = 'point'
-    id = Column(Integer, primary_key=True)
-    type = Column(String(50))
+class Point(object):
     x = Column(Float, nullable=False)
     y = Column(Float, nullable=False)
     z = Column(Float, nullable=False)
-    __mapper_args__ = {
-        'polymorphic_identity':'point',
-        'polymorphic_on':type
-    }
 
-class ImagePoint(Point):
+class ImagePoint(Base, Point):
     __tablename__ = 'image_point'
-    id = Column(Integer, ForeignKey('point.id'), primary_key=True)
-    __mapper_args__ = {
-        'polymorphic_identity':'image_point',
-    }
+    id = Column(Integer, primary_key=True)
+    image_id = Column(Integer, ForeignKey('image.id'))
+    image = relationship('Image', back_populates='image_points', cascade='save-update, merge')
 
+    def __init__(self, x, y, z):
+        Point.__init__(self, x=x, y=y, z=z)
 
-class ObjectPoint(Point):
+class ObjectPoint(Base, Point):
     __tablename__ = 'object_point'
-    id = Column(Integer, ForeignKey('point.id'), primary_key=True)
-    __mapper_args__ = {
-        'polymorphic_identity':'object_point',
-    }
+    id = Column(Integer, primary_key=True)
+
+    def __init__(self, x, y, z):
+        Point.__init__(self, x=x, y=y, z=z)
