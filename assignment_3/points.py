@@ -10,6 +10,13 @@ class Point(object):
     marker = Column(String(50))
     colour = Column(String(50))
 
+    def __init__(self, x, y, z, colour, marker):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.colour = colour
+        self.marker = marker
+
 class ImagePoint(Base, Point):
     __tablename__ = 'image_point'
     id = Column(Integer, primary_key=True)

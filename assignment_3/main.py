@@ -15,7 +15,8 @@ def init():
 	camera = Camera(focal_length=0.02, height=0.23, width=0.23)
 	image_1 = Image(camera=camera)
 	image_2 = Image(camera=camera)
-
+	object_point = ObjectPoint(x=1, y=0, z=2)
+	db.session.add(object_point)
 	db.session.add(camera)
 	db.session.commit()
 
@@ -25,8 +26,8 @@ def plot(vectors, points):
 	fig = plt.figure()
 	ax = fig.add_subplot(1, 2, 1, projection='3d')
 	for point in points:
-		assert issubclass(point, Point)
+		assert issubclass(point.__class__, Point)
 		ax.scatter(point.x, point.y, point.z, c='r', marker='o')
 	plt.show()
 
-plot(None, db.session.query(ImagePoint, ObjectPoint).all())
+plot(None, db.session.query(ObjectPoint).all())
