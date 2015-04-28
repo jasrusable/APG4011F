@@ -10,7 +10,7 @@ class Image(Base):
     camera = relationship('Camera', back_populates='images', cascade='save-update, merge')
     image_points = relationship('ImagePoint', back_populates='image', cascade='save-update, merge, delete, delete-orphan')
     perspective_center_id = Column(Integer, ForeignKey('perspective_center_point.id'))
-    perspective_center = relationship('PerspectiveCenterPoint', back_populates='images', cascade='save-update, merge')
+    perspective_center = relationship('PerspectiveCenterPoint', back_populates='images', cascade='save-update, merge, delete, delete-orphan')
 
     def __init__(self, camera, image_points=list()):
     	self.camera = camera
