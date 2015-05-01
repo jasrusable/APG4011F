@@ -6,7 +6,7 @@ from db import Base
 class Image(Base):
     __tablename__ = 'image'
     id = Column(Integer, primary_key=True)
-    camera_id = Column(Integer, ForeignKey('camera.id'))
+    camera_id = Column(Integer, ForeignKey('camera.id'), nullable=False)
     camera = relationship('Camera', back_populates='images', cascade='save-update, merge')
     image_points = relationship('ImagePoint', back_populates='image', 
         cascade='save-update, merge, delete, delete-orphan')
