@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, uniform
 
 from points import Point, ImagePoint, ObjectPoint
 from points import PerspectiveCenterPoint
@@ -8,8 +8,8 @@ from vectors import Vector
 
 def generate_random_image_point(image):
     camera = image.camera
-    x = randint(0, camera.height * 100) / 100
-    y = randint(0, camera.width * 100) / 100
+    x = uniform(-camera.height * 100 / 2, camera.height * 100 / 2) / 100
+    y = uniform(-camera.width * 100 / 2, camera.width * 100) / 100
     z = -camera.focal_length
     return ImagePoint(x=x, y=y, z=z)
 
