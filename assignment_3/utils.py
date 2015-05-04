@@ -8,6 +8,7 @@ from vectors import Vector
 
 def generate_random_image_point(image):
     camera = image.camera
+    # Should these ranges be (0, camera.heigh * 100) / 100, or like I have them below:
     x = uniform(-camera.height * 100 / 2, camera.height * 100 / 2) / 100
     y = uniform(-camera.width * 100 / 2, camera.width * 100) / 100
     z = -camera.focal_length
