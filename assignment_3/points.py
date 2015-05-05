@@ -29,9 +29,10 @@ class ImagePoint(Base, Point):
     object_point = relationship('ObjectPoint', back_populates='image_points',
         cascade='save-update, merge')
 
-    def __init__(self, x, y, z, object_point=None, tag=None, colour='b', marker='o'):
+    def __init__(self, x, y, z, image=None, object_point=None, tag=None, colour='b', marker='o'):
         Point.__init__(self, x=x, y=y, z=z, tag=tag, colour=colour, marker=marker)
         self.object_point = object_point
+        self.image = image
 
 class ObjectPoint(Base, Point):
     __tablename__ = 'object_point'

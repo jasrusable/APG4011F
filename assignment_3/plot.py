@@ -9,7 +9,7 @@ def plot(vectors, points):
 	ax = fig.add_subplot(1,1,1, projection='3d')
 	for point in points:
 		assert issubclass(point.__class__, Point)
-		ax.scatter(point.x, point.y, point.z, c='r', marker='o')
+		ax.scatter(point.x, point.y, point.z, c=point.colour, marker=point.marker)
 	for vector in vectors:
 		assert issubclass(type(vector), Vector)
 		from_ = vector.from_point
