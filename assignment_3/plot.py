@@ -15,5 +15,5 @@ def plot(vectors, points):
 		from_ = vector.from_point
 		to = vector.to_point
 		ax.plot([from_.x, to.x], [from_.y, to.y], zs=[from_.z, to.z])
+	ax.set_autoscale_on(False) 
 	plt.show()
-

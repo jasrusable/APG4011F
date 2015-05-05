@@ -13,8 +13,10 @@ class Image(Base):
     perspective_center_id = Column(Integer, ForeignKey('perspective_center_point.id'), nullable=False)
     perspective_center = relationship('PerspectiveCenterPoint', back_populates='images', 
         cascade='save-update, merge, delete, delete-orphan', single_parent=True)
+    tag = Column(String(50))
 
-    def __init__(self, camera, perspective_center, image_points=list()):
+    def __init__(self, camera, perspective_center, tag=None, image_points=list()):
         self.camera = camera
         self.perspective_center = perspective_center
         self.image_points = image_points
+        self.tag = tag

@@ -9,13 +9,15 @@ class Point(object):
     z = Column(Float, nullable=False)
     marker = Column(String(50))
     colour = Column(String(50))
+    tag = Column(String(50))
 
-    def __init__(self, x, y, z, colour, marker):
+    def __init__(self, x, y, z, colour, marker, tag):
         self.x = x
         self.y = y
         self.z = z
         self.colour = colour
         self.marker = marker
+        self.tag = tag
 
 class ImagePoint(Base, Point):
     __tablename__ = 'image_point'
@@ -27,8 +29,9 @@ class ImagePoint(Base, Point):
     object_point = relationship('ObjectPoint', back_populates='image_points',
         cascade='save-update, merge')
 
-    def __init__(self, x, y, z, colour='b', marker='o'):
-        Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)
+    def __init__(self, x, y, z, object_point=None, tag=None, colour='b', marker='o'):
+        Point.__init__(self, x=x, y=y, z=z, tag=tag, colour=colour, marker=marker)
+        self.object_point = object_point
 
 class ObjectPoint(Base, Point):
     __tablename__ = 'object_point'
@@ -36,8 +39,8 @@ class ObjectPoint(Base, Point):
     image_points = relationship('ImagePoint', back_populates='object_point',
         cascade='save-update, merge')
 
-    def __init__(self, x, y, z, colour='k', marker='o'):
-        Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)
+    def __init__(self, x, y, z, tag=None, colour='k', marker='o'):
+        Point.__init__(self, x=x, y=y, z=z, tag=tag, colour=colour, marker=marker)
 
 class PerspectiveCenterPoint(Base, Point):
     __tablename__ = 'perspective_center_point'
@@ -45,6 +48,6 @@ class PerspectiveCenterPoint(Base, Point):
     images = relationship('Image', back_populates='perspective_center', 
         cascade='save-update, merge, delete, delete-orphan')
 
-    def __init__(self, x, y, z, colour='r', marker='o', images=list()):
+    def __init__(self, x, y, z, tag=None, colour='r', marker='o', images=list()):
         self.images = images
-        Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)
+        Point.__init__(self, x=x, y=y, z=z, tag=tag, colour=colour, marker=marker)

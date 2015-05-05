@@ -13,25 +13,41 @@ from plot import plot
 from utils import generate_random_image_points
 from utils import get_list_of_all_point_from_image
 from utils import solve_for_object_point
-from init_db import init
 
-
-init()
 
 points_to_plot = list()
 vectors_to_plot = list()
-my_image = db.session.query(Image).first()
 
-my_image.image_points = generate_random_image_points(my_image, 50)
-db.session.add(my_image)
-db.session.commit()
+def init():
+    db.drop_all()
+    db.create_all()
+    camera = Camera(focal_length=0.2, height=0.23, width=0.23)
+    pc_1 = PerspectiveCenterPoint(x=100, y=0, z=3000)
+    pc_2 = PerspectiveCenterPoint(x=200, y=0, z=3000)
+    image_1 = Image(tag='image_1', camera=camera, perspective_center=pc_1)
+    image_2 = Image(tag='image_2', camera=camera, perspective_center=pc_2)
+    db.session.add(camera)
+    db.session.commit()
+init()
 
-for image_point in my_image.image_points:
-    points_to_plot.append(image_point)
-    object_point = solve_for_object_point(image_point, 0, 0, 0, 1000)
-    points_to_plot.append(object_point)
-    vectors_to_plot.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point))
+first_image = db.session.query(Image).filter(Image.tag=='image_1').one()
 
-points_to_plot.append(my_image.perspective_center)
+# Add 30 random image points to first image
+def add_random_points_to_image(image, n=30, tag=None):
+	image.image_points = generate_random_image_points(image, n, tag=tag)
+	db.session.add(image)
+	db.session.commit()
 
-plot(vectors_to_plot, points_to_plot)
+# Create object points using an images' image points
+def add_object_points_to_image_points(image, rx, ry, rz, scale, tag=None):
+	for image_point in image:
+	    object_point = solve_for_object_point(image_point, rx, ry, rz, scale, tag)
+	    image_point.object_point = object_point
+	    db.session.add(image_point)
+	db.session.commit()
+
+def add_image_points_from_object_points(image, object_points):
+	pass
+
+
+#plot(vectors_to_plot, points_to_plot)

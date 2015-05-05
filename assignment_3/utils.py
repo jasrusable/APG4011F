@@ -8,18 +8,18 @@ from cameras import Camera
 from images import Image
 from vectors import Vector
 
-def generate_random_image_point(image):
+def generate_random_image_point(image, tag):
     camera = image.camera
     # Should these ranges be (0, camera.heigh * 100) / 100, or like I have them below:
     x = uniform(-camera.height * 100 / 2, camera.height * 100 / 2) / 100
     y = uniform(-camera.width * 100 / 2, camera.width * 100) / 100
     z = -camera.focal_length
-    return ImagePoint(x=x, y=y, z=z)
+    return ImagePoint(x=x, y=y, z=z, tag=tag)
 
-def generate_random_image_points(image, n=25):
+def generate_random_image_points(image, n=25, tag=None):
     points = []
     for i in range(n):
-        points.append(generate_random_image_point(image))
+        points.append(generate_random_image_point(image, tag=tag))
     return points
 
 def get_list_of_all_point_from_image(image):
@@ -28,7 +28,7 @@ def get_list_of_all_point_from_image(image):
         points.append(image_point)
     return points
 
-def solve_for_object_point(image_point, rx, ry, rz, scale):
+def solve_for_object_point(image_point, rx, ry, rz, scale, tag=None):
     rx = math.radians(rx)
     ry = math.radians(ry)
     rz = math.radians(rz)
@@ -67,4 +67,4 @@ def solve_for_object_point(image_point, rx, ry, rz, scale):
     x = result.item(0,0)
     y = result.item(1,0)
     z = result.item(2,0)
-    return ObjectPoint(x=x, y=y, z=z)
+    return ObjectPoint(x=x, y=y, z=z, tag=tag)
