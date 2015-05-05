@@ -23,6 +23,9 @@ class ImagePoint(Base, Point):
     image_id = Column(Integer, ForeignKey('image.id'))
     image = relationship('Image', back_populates='image_points', 
         cascade='save-update, merge')
+    object_point_id = Column(Integer, ForeignKey('object_point.id'))
+    object_point = relationship('ObjectPoint', back_populates='image_points',
+        cascade='save-update, merge')
 
     def __init__(self, x, y, z, colour='b', marker='o'):
         Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)
@@ -30,6 +33,8 @@ class ImagePoint(Base, Point):
 class ObjectPoint(Base, Point):
     __tablename__ = 'object_point'
     id = Column(Integer, primary_key=True)
+    image_points = relationship('ImagePoint', back_populates='object_point',
+        cascade='save-update, merge')
 
     def __init__(self, x, y, z, colour='k', marker='o'):
         Point.__init__(self, x=x, y=y, z=z, colour=colour, marker=marker)

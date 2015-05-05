@@ -13,32 +13,27 @@ from plot import plot
 from utils import generate_random_image_points
 from utils import get_list_of_all_point_from_image
 
+
 def init():
     db.drop_all()
     db.create_all()
     camera = Camera(focal_length=0.2, height=0.23, width=0.23)
-    pc_1 = PerspectiveCenterPoint(x=10, y=0, z=10)
+    pc_1 = PerspectiveCenterPoint(x=10, y=0, z=100)
     #pc_2 = PerspectiveCenterPoint(x=1, y=0, z=10)
     image_1 = Image(camera=camera, perspective_center=pc_1)
     #image_2 = Image(camera=camera, perspective_center=pc_2)
     db.session.add(camera)
     db.session.commit()
-
 init()
 
-
-def solve_for_object_point(image_point, rx, ry, rz, sx, sy, sz):
+def solve_for_object_point(image_point, rx, ry, rz, s):
     rx = math.radians(rx)
     ry = math.radians(ry)
     rz = math.radians(rz)
     cos = math.cos
     sin = math.sin
     perspective_center = image_point.image.perspective_center
-    S = numpy.matrix([
-        [sx, 0, 0],
-        [0, sy, 0],
-        [0, 0, sz],
-    ])
+    S = s
     Rx = numpy.matrix([
         [1, 0, 0],
         [0, cos(rx), -sin(rx)],
@@ -71,6 +66,7 @@ def solve_for_object_point(image_point, rx, ry, rz, sx, sy, sz):
     x = result.item(0,0)
     y = result.item(1,0)
     z = result.item(2,0)
+
     return ObjectPoint(x=x, y=y, z=z)
 
 points = list()
@@ -83,11 +79,10 @@ db.session.commit()
 
 for image_point in my_image.image_points:
     points.append(image_point)
-    object_point = solve_for_object_point(image_point, 0, 0, 0, 100, 100, 100)
+    object_point = solve_for_object_point(image_point, 0, 0, 0, 1000)
     points.append(object_point)
     vectors.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point))
 
 points.append(my_image.perspective_center)
 
-
-plot(vectors, points)
+#plot(vectors, points)

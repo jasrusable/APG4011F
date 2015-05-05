@@ -6,7 +6,7 @@ from vectors import Vector
 
 def plot(vectors, points):
 	fig = plt.figure()
-	ax = fig.add_subplot(1, 2, 1, projection='3d')
+	ax = fig.add_subplot(1,1,1, projection='3d')
 	for point in points:
 		assert issubclass(point.__class__, Point)
 		ax.scatter(point.x, point.y, point.z, c='r', marker='o')
