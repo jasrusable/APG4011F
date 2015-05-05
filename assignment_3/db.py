@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
-engine = create_engine('sqlite:///my_db.db')
+engine = create_engine('sqlite://')
 
 Base = declarative_base()
 
