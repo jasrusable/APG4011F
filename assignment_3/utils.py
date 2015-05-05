@@ -1,3 +1,5 @@
+import math
+import numpy
 from random import randint, uniform
 
 from points import Point, ImagePoint, ObjectPoint
@@ -25,3 +27,44 @@ def get_list_of_all_point_from_image(image):
     for image_point in image.image_points:
         points.append(image_point)
     return points
+
+def solve_for_object_point(image_point, rx, ry, rz, scale):
+    rx = math.radians(rx)
+    ry = math.radians(ry)
+    rz = math.radians(rz)
+    cos = math.cos
+    sin = math.sin
+    perspective_center = image_point.image.perspective_center
+    Rx = numpy.matrix([
+        [1, 0, 0],
+        [0, cos(rx), -sin(rx)],
+        [0, sin(rx), cos(rx)]
+    ])
+    Ry = numpy.matrix([
+        [cos(ry), 0, sin(ry)],
+        [0, 1, 0],
+        [-sin(ry), 0, cos(ry)]
+    ])
+    Rz = numpy.matrix([
+        [cos(rz), -sin(rz), 0],
+        [sin(rz), cos(rz), 0],
+        [0, 0, 1]
+    ])
+    image_point_vector = numpy.matrix([
+        [image_point.x], 
+        [image_point.y], 
+        [image_point.z]
+    ])
+    perspective_center_vector = numpy.matrix([
+        [perspective_center.x],
+        [perspective_center.y],
+        [perspective_center.z]
+    ])
+
+    R = Rx * Ry * Rz
+
+    result = scale * R.T * image_point_vector + perspective_center_vector
+    x = result.item(0,0)
+    y = result.item(1,0)
+    z = result.item(2,0)
+    return ObjectPoint(x=x, y=y, z=z)
