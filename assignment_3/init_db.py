@@ -15,4 +15,3 @@ def init():
     #image_2 = Image(camera=camera, perspective_center=pc_2)
     db.session.add(camera)
     db.session.commit()
-init()
