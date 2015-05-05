@@ -20,7 +20,7 @@ def is_image_point_in_image(image_point, image):
         return True
     return False
 
-def generate_random_image_point(image, tag):
+def generate_random_image_point(image, tag=None):
     camera = image.camera
     # Should these ranges be (0, camera.heigh * 100) / 100, or like I have them below:
     x = uniform(-camera.height * 100 / 2, camera.height * 100 / 2) / 100
