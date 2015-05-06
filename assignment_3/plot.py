@@ -14,6 +14,6 @@ def plot(vectors, points):
 		assert issubclass(type(vector), Vector)
 		from_ = vector.from_point
 		to = vector.to_point
-		ax.plot([from_.x, to.x], [from_.y, to.y], zs=[from_.z, to.z])
+		ax.plot([from_.x, to.x], [from_.y, to.y], zs=[from_.z, to.z], c=vector.colour)
 	ax.set_autoscale_on(False) 
 	plt.show()

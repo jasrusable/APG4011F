@@ -28,7 +28,7 @@ def init():
     db.create_all()
     camera = Camera(focal_length=0.9, height=0.23, width=0.23)
     pc_1 = PerspectiveCenterPoint(x=100, y=0, z=4000)
-    pc_2 = PerspectiveCenterPoint(x=500, y=0, z=3000)
+    pc_2 = PerspectiveCenterPoint(x=900, y=0, z=3000)
     image_1 = Image(tag='image_1', camera=camera, perspective_center=pc_1, rx=0, ry=0, rz=0)
     image_2 = Image(tag='image_2', camera=camera, perspective_center=pc_2, rx=0, ry=0, rz=0)
     db.session.add(camera)
@@ -54,6 +54,7 @@ def add_random_points_to_image(image, n=30, colour=None, tag='pure'):
 def add_corresponding_object_points_to_image_points(image, scale, tag='pure'):
     for image_point in image.image_points:
         object_point = solve_for_object_point(image_point, scale, tag)
+        object_point.tag = tag
         image_point.object_point = object_point
         db.session.add(image_point)
         db.session.add(object_point)
@@ -76,15 +77,15 @@ def add_image_points_from_object_points(image, object_points, scale, colour=None
 
 def create_errored_points(points, x_min, x_max, y_min, y_max, z_min, z_max, tag='errored', colour='y'):
     for point in points:
-        db.session.expunge(point)
-        make_transient(point)
-        point.id = None
+        temp = list()
+        if isinstance(point, ObjectPoint):
+            temp = copy.copy(point.image_points)
         errored_point = add_random_errors_to_point(point, x_min, x_max, y_min, y_max, z_min, z_max)
         errored_point.tag = tag
         errored_point.colour = colour
+        errored_point.image_points = temp
         db.session.add(errored_point)
-    db.session.commit()
-
+        db.session.commit()
 
 add_random_points_to_image(first_image, colour='b', tag='pure')
 add_corresponding_object_points_to_image_points(first_image, 10000, 'pure')
@@ -98,6 +99,17 @@ def populate_vectors_to_plot_list():
     for object_point in db.session.query(ObjectPoint).all():
         if len(object_point.image_points) > 1:
             for image_point in object_point.image_points:
-                vectors_to_plot.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point))
+                if object_point.tag == 'pure':
+                    print('pure')
+                    if image_point.image == first_image:
+                        colour = 'b'
+                    else:
+                        colour = 'k'
+                else:
+                    colour = 'r'
+                vectors_to_plot.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point, colour=colour))
+print(len(vectors_to_plot))
+populate_vectors_to_plot_list()
+
 print(len(points_to_plot))
 plot(vectors_to_plot, points_to_plot)
