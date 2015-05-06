@@ -8,6 +8,16 @@ from cameras import Camera
 from images import Image
 from vectors import Vector
 
+
+def add_random_errors_to_point(point, x_min, x_max, y_min, y_max, z_min, z_max):
+    x_error = uniform(x_min, x_max)
+    y_error = uniform(y_min, y_max)
+    z_error = uniform(z_min, z_max)
+    point.x += x_error
+    point.y += y_error
+    point.z += z_error
+    return point
+
 def is_image_point_in_image(image_point, image):
     camera = image.camera
     x_lower_bound = -camera.width / 2
