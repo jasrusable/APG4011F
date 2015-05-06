@@ -72,7 +72,6 @@ def add_image_points_from_object_points(image, object_points, scale, colour=None
             db.session.add(object_point)
         else:
             pass
-            #print('point does not fall in image.')
     db.session.commit()
 
 def create_errored_points(points, x_min, x_max, y_min, y_max, z_min, z_max, tag='errored', colour='y'):
@@ -90,9 +89,7 @@ def create_errored_points(points, x_min, x_max, y_min, y_max, z_min, z_max, tag=
 add_random_points_to_image(first_image, colour='b', tag='pure')
 add_corresponding_object_points_to_image_points(first_image, 10000, 'pure')
 add_image_points_from_object_points(second_image, db.session.query(ObjectPoint).all(), 1/10000, colour='b', tag='pure')
-
-
-print(create_errored_points(db.session.query(ObjectPoint).all(), -5, 5, -5, 5, -5, 5))
+create_errored_points(db.session.query(ObjectPoint).all(), -5, 5, -5, 5, -5, 5)
 
 points_to_plot += db.session.query(ObjectPoint).all()
 points_to_plot += db.session.query(ImagePoint).all()
