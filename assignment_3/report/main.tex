@@ -36,6 +36,7 @@ Given a set of object points which have homolougous points in two seperate image
 Given a set ob object points, which each have a homologus point in two seperate images, set up a least squares adjustment to determine the exterior orientation parameters of each image
 
 \subsection{Bundle Adjustment}
+Given a set of object points, treat 80\% of them as control, and the remainder as tie points. Then, use the collinearity equations to set up a least squares adjustment to simultaneously determine the exterior orietation paramters of the two images as well as the object coordinates of the tie points.
 
 
 \section{Method}
