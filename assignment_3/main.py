@@ -75,22 +75,16 @@ def add_image_points_from_object_points(image, object_points, scale, colour=None
             pass
     db.session.commit()
 
-def create_errored_points(points, x_min, x_max, y_min, y_max, z_min, z_max, tag='errored', colour='y'):
+def add_error_to_points(points, x_min, x_max, y_min, y_max, z_min, z_max, tag='errored', colour='r'):
     for point in points:
-        temp = list()
-        if isinstance(point, ObjectPoint):
-            temp = copy.copy(point.image_points)
-        errored_point = add_random_errors_to_point(point, x_min, x_max, y_min, y_max, z_min, z_max)
-        errored_point.tag = tag
-        errored_point.colour = colour
-        errored_point.image_points = temp
-        db.session.add(errored_point)
+        point = add_random_errors_to_point(point, x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, z_min=z_min, z_max=z_max)
+        db.session.add(point)
         db.session.commit()
 
 add_random_points_to_image(first_image, colour='b', tag='pure')
 add_corresponding_object_points_to_image_points(first_image, 10000, 'pure')
 add_image_points_from_object_points(second_image, db.session.query(ObjectPoint).all(), 1/10000, colour='b', tag='pure')
-create_errored_points(db.session.query(ObjectPoint).all(), -5, 5, -5, 5, -5, 5)
+add_error_to_points(db.session.query(ObjectPoint).all(), -50, 50, -50, 500, -50, 500)
 
 points_to_plot += db.session.query(ObjectPoint).all()
 points_to_plot += db.session.query(ImagePoint).all()
@@ -99,17 +93,7 @@ def populate_vectors_to_plot_list():
     for object_point in db.session.query(ObjectPoint).all():
         if len(object_point.image_points) > 1:
             for image_point in object_point.image_points:
-                if object_point.tag == 'pure':
-                    print('pure')
-                    if image_point.image == first_image:
-                        colour = 'b'
-                    else:
-                        colour = 'k'
-                else:
-                    colour = 'r'
-                vectors_to_plot.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point, colour=colour))
-print(len(vectors_to_plot))
+                vectors_to_plot.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point))
 populate_vectors_to_plot_list()
 
-print(len(points_to_plot))
 plot(vectors_to_plot, points_to_plot)
