@@ -23,23 +23,44 @@ The purpose of this assignment is to gain an understading into the principles of
 A python program will be used to demonstrate and simulate how image restituion and bundle adjusment is performed.
 
 \section{Background}
-Bundle adjustment can be defined as the simultaneous redining od 3D coordiantes describing a scene geometery as well as the parameters of the realtive motion and optical characteristcs of the cameras used to accuire images, accodng to an optially reiterion involving the correspsoding image projections of all points.
+Bundle adjustment can be defined as the simultaneous redining od 3D coordiantes describing a scene geometery as well 
+as the parameters of the realtive motion and optical characteristcs of the cameras used to accuire images, 
+accodng to an optially reiterion involving the correspsoding image projections of all points.
 
 
 \section{Problem Statement}
 There are three main questions which will be addressed in this assignment. They are listed below:
 
 \subsection{Intersection}
-Given a set of object points which have homolougous points in two seperate images, with each image having unique exterior orientation paramters, set up a least squares adjustment using the collieanarity equations to redetermine the object points from each pair of homologous points from each image. Thereafter, compare the new object coordiantes to those original, pregenrated object coordinates.
+Given a set of object points which have homolougous points in two seperate images, with each image having unique exterior 
+orientation paramters, set up a least squares adjustment using the collieanarity equations to redetermine the object points 
+from each pair of homologous points from each image. Thereafter, compare the new object coordiantes to those original, 
+pregenrated object coordinates.
 
 \subsection{Resection}
-Given a set ob object points, which each have a homologus point in two seperate images, set up a least squares adjustment to determine the exterior orientation parameters of each image
+Given a set ob object points, which each have a homologus point in two seperate images, set up a least squares adjustment 
+to determine the exterior orientation parameters of each image,
 
 \subsection{Bundle Adjustment}
-Given a set of object points, treat 80\% of them as control, and the remainder as tie points. Then, use the collinearity equations to set up a least squares adjustment to simultaneously determine the exterior orietation paramters of the two images as well as the object coordinates of the tie points.
+Given a set of object points, treat 80\% of them as control, and the remainder as tie points. 
+Then, use the collinearity equations to set up a least squares adjustment to simultaneously determine the exterior 
+orietation paramters of the two images as well as the object coordinates of the tie points.
 
 
 \section{Method}
+A pyhton program was created which is used to run the various adjustments and calcuations pertaining to the questions 
+in this assignment.
+
+\subsection{Creating ficticous Object Points}
+In order to create fictiocous object points, eachg with two homolougous points in different images, 
+two camera poitions were created, each with a uniqie perspective center. 
+Paramters for the first iamge were set up and thirty random points where generated in the first images' image coordiante system. 
+These random points were then projected down into the object coordinate system using the collinearity equations and 
+predefined rotations and scales. Then, in order to create the homologous points in the second image, the object points were 
+reprojected to the second image again using the collinearity equations. 
+This resulted in three sets of homoloous points, namely, those in the first images' image system, those in the object system, 
+and those in the second images' image system.
+
 
 \section{Results}
 
