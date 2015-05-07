@@ -41,7 +41,7 @@ points_to_plot += db.session.query(PerspectiveCenterPoint).all()
 first_image = db.session.query(Image).filter(Image.tag=='image_1').one()
 second_image = db.session.query(Image).filter(Image.tag=='image_2').one()
 
-# Add 30 random image points to first image
+# Add n random image points to first image
 def add_random_points_to_image(image, n=30, colour=None, tag='pure'):
     image.image_points = generate_random_image_points(image, n, tag=tag)
     if colour:
