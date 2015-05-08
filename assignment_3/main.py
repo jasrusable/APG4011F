@@ -100,7 +100,7 @@ populate_vectors_to_plot_list()
 #plot(vectors_to_plot, points_to_plot)
 
 
-def resection():
+def resection(image_points):
     rx = sympy.Symbol('rx')
     ry = sympy.Symbol('ry')
     rz = sympy.Symbol('rz')
@@ -143,6 +143,13 @@ def resection():
         [Z0],
         ])
 
-    print(k*R*(obj - pc))
+    image_coords = k*R*(obj - pc)
+    x = image_coords.item(0)
+    y = image_coords.item(1)
+    negative_c = image_coords.item(2)
 
+    A = numpy.matrix([[0] * 6,])
+    A = numpy.delete(A, (0), axis=0)
+    l = numpy.matrix([[0],])
+    l = numpy.delete(l, (0), axis=0)
 resection()
