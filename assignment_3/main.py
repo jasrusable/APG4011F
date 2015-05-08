@@ -2,6 +2,7 @@ import math
 import sqlalchemy
 import numpy
 import copy
+import sympy
 from random import randint, uniform
 from sqlalchemy.orm import make_transient
 
@@ -84,7 +85,7 @@ def add_error_to_points(points, x_min, x_max, y_min, y_max, z_min, z_max, tag='e
 add_random_points_to_image(first_image, colour='b', tag='pure')
 add_corresponding_object_points_to_image_points(first_image, 10000, 'pure')
 add_image_points_from_object_points(second_image, db.session.query(ObjectPoint).all(), 1/10000, colour='b', tag='pure')
-add_error_to_points(db.session.query(ObjectPoint).all(), -50, 50, -50, 500, -50, 500)
+add_error_to_points(db.session.query(ObjectPoint).all(), -50, 50, -50, 500, -50, 500, tag='errored')
 
 points_to_plot += db.session.query(ObjectPoint).all()
 points_to_plot += db.session.query(ImagePoint).all()
@@ -96,4 +97,52 @@ def populate_vectors_to_plot_list():
                 vectors_to_plot.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point))
 populate_vectors_to_plot_list()
 
-plot(vectors_to_plot, points_to_plot)
+#plot(vectors_to_plot, points_to_plot)
+
+
+def resection():
+    rx = sympy.Symbol('rx')
+    ry = sympy.Symbol('ry')
+    rz = sympy.Symbol('rz')
+    X = sympy.Symbol('X')
+    Y = sympy.Symbol('Y')
+    Z = sympy.Symbol('Z')
+    X0 = sympy.Symbol('X0')
+    Y0 = sympy.Symbol('Y0')
+    Z0 = sympy.Symbol('Z0')
+    k = sympy.Symbol('k')
+
+    cos = sympy.cos
+    sin = sympy.sin
+
+    Rx = numpy.matrix([
+        [1, 0, 0],
+        [0, cos(rx), -sin(rx)],
+        [0, sin(rx), cos(rx)]
+    ])
+    Ry = numpy.matrix([
+        [cos(ry), 0, sin(ry)],
+        [0, 1, 0],
+        [-sin(ry), 0, cos(ry)]
+    ])
+    Rz = numpy.matrix([
+        [cos(rz), -sin(rz), 0],
+        [sin(rz), cos(rz), 0],
+        [0, 0, 1]
+    ])
+
+    R = Rx * Ry * Rz
+    obj = numpy.matrix([
+        [X],
+        [Y],
+        [Z],
+        ])
+    pc = numpy.matrix([
+        [X0],
+        [Y0],
+        [Z0],
+        ])
+
+    print(k*R*(obj - pc))
+
+resection()
