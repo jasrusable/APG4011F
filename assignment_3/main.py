@@ -102,7 +102,7 @@ populate_vectors_to_plot_list()
 
 def resection(image_points):
     """ Each image_point has a relationship with an
-    object_point
+    object_point.
     """
     rx = sympy.Symbol('rx')
     ry = sympy.Symbol('ry')
@@ -166,6 +166,8 @@ def resection(image_points):
         rz_prov_x = diff(x, rz)
         a_row = [X0_prov_x, Y0_prov_x, Z0_prov_x, rx_prov_x, ry_prov_x, rz_prov_x]
         A = numpy.vstack([A, a_row])
+        l_row = [image_point.x - x]
+        l = numpy.vstack([l, l_row])
 
         # Second row (y)
         X0_prov_y = diff(y, X0)
@@ -176,6 +178,8 @@ def resection(image_points):
         rz_prov_y = diff(y, rz)
         a_row = [X0_prov_y, Y0_prov_y, Z0_prov_y, rx_prov_y, ry_prov_y, rz_prov_y]
         A = numpy.vstack([A, a_row])
+        l_row = [image_point.y - y]
+        l = numpy.vstack([l, l_row])
 
         # Third row (-c)
         X0_prov_negative_c = diff(negative_c, X0)
@@ -186,6 +190,8 @@ def resection(image_points):
         rz_prov_negative_c = diff(negative_c, rz)
         a_row = [X0_prov_negative_c, Y0_prov_negative_c, Z0_prov_negative_c, rx_prov_negative_c, ry_prov_negative_c, rz_prov_negative_c]
         A = numpy.vstack([A, a_row])
-
+        # image_point.z == -c I think...
+        l_row = [image_point.z - negative_c]
+        l = numpy.vstack([l, l_row])
 
 resection(first_image.image_points)
