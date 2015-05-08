@@ -101,6 +101,9 @@ populate_vectors_to_plot_list()
 
 
 def resection(image_points):
+    """ Each image_point has a relationship with an
+    object_point
+    """
     rx = sympy.Symbol('rx')
     ry = sympy.Symbol('ry')
     rz = sympy.Symbol('rz')
@@ -143,7 +146,7 @@ def resection(image_points):
         [Z0],
         ])
 
-    image_coords = k*R*(obj - pc)
+    image_coords = k * R * (obj - pc)
     x = image_coords.item(0)
     y = image_coords.item(1)
     negative_c = image_coords.item(2)
@@ -152,4 +155,37 @@ def resection(image_points):
     A = numpy.delete(A, (0), axis=0)
     l = numpy.matrix([[0],])
     l = numpy.delete(l, (0), axis=0)
-resection()
+    diff = sympy.diff
+    for image_point in image_points:
+        # First row (x)
+        X0_prov_x = diff(x, X0)
+        Y0_prov_x = diff(x, Y0)
+        Z0_prov_x = diff(x, Z0)
+        rx_prov_x = diff(x, rx)
+        ry_prov_x = diff(x, ry)
+        rz_prov_x = diff(x, rz)
+        a_row = [X0_prov_x, Y0_prov_x, Z0_prov_x, rx_prov_x, ry_prov_x, rz_prov_x]
+        A = numpy.vstack([A, a_row])
+
+        # Second row (y)
+        X0_prov_y = diff(y, X0)
+        Y0_prov_y = diff(y, Y0)
+        Z0_prov_y = diff(y, Z0)
+        rx_prov_y = diff(y, rx)
+        ry_prov_y = diff(y, ry)
+        rz_prov_y = diff(y, rz)
+        a_row = [X0_prov_y, Y0_prov_y, Z0_prov_y, rx_prov_y, ry_prov_y, rz_prov_y]
+        A = numpy.vstack([A, a_row])
+
+        # Third row (-c)
+        X0_prov_negative_c = diff(negative_c, X0)
+        Y0_prov_negative_c = diff(negative_c, Y0)
+        Z0_prov_negative_c = diff(negative_c, Z0)
+        rx_prov_negative_c = diff(negative_c, rx)
+        ry_prov_negative_c = diff(negative_c, ry)
+        rz_prov_negative_c = diff(negative_c, rz)
+        a_row = [X0_prov_negative_c, Y0_prov_negative_c, Z0_prov_negative_c, rx_prov_negative_c, ry_prov_negative_c, rz_prov_negative_c]
+        A = numpy.vstack([A, a_row])
+
+
+resection(first_image.image_points)
