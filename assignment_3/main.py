@@ -100,7 +100,7 @@ populate_vectors_to_plot_list()
 #plot(vectors_to_plot, points_to_plot)
 
 
-def resection(image_points):
+def resection(image_points, prov_X0, prov_Y0, prov_Z0, prov_rx, prov_ry, prov_rz):
     """ Each image_point has a relationship with an
     object_point.
     """
@@ -194,4 +194,4 @@ def resection(image_points):
         l_row = [image_point.z - negative_c]
         l = numpy.vstack([l, l_row])
 
-resection(first_image.image_points)
+resection(first_image.image_points, 100, 0, 1000, 0, 0, 0)
