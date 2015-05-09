@@ -23,7 +23,33 @@ The purpose of this assignment is to gain an understading into the principles of
 A python program will be used to demonstrate and simulate how image restituion and bundle adjusment is performed.
 
 \section{Background}
-Bundle adjustment can be defined as the simultaneous redining od 3D coordiantes describing a scene geometery as well 
+Image restitution and bundle adjustment has many applications in various fields such as computer vision and photogrammtery. 
+The objective of image restituion is to reconstruct image rays in space, as they existed during the moment of photogrophy. 
+This means that a single image ray will pass through a perspective center, image point, and homologous object point, and so
+in order to reconstruct an image ray, various parameters need to be taken into consideration:
+Perspective center cooridantes, camera tilt/attitude, camera focal length/principle distance, image point coordiante (in the 
+image coordiante system), and correspsond object point coordiante.
+The process of reconstrcuting iamge rays can be broken down into two main parts, namely, interior orientation, and exterior orientation.
+
+Interioer or Inner orientaiobn is described as the reconstruction of the geomerty of th bundle of imagin rays as they exitsted at the time 
+of photogrpay. It is defined by: the calibrated principle distance of the camera, the postion of the principle poing in the image plane, 
+and the gemometric distortion characteristics of the lens system.
+In this assignement, ficticous image and object points will be created such that an intersection, resection and full bundle adjustment 
+can be carried out. 
+
+(interiour orientaion diagrams and equations here)
+
+Exterour or Outer orirenataion is descibed as the reconstruction of the poiition and attitide of the camera as it existed at the time of
+photogrpahy and is defined by: the posituion of the projection cener, and the rotaion anges for each 3D axis.
+
+(Exterior orientaion diarams and equations here)
+
+In order to relate these two systems, the collinearity condition is used and it states that assuming no unmodelled image and lens
+distortions, the projection center, object point and correspding image point should lie on a straight line.
+
+(Collineartiy condtion equations here)
+
+Bundle adjustment can be defined as the simultaneous refining of 3D coordiantes describing a scene geometery as well 
 as the parameters of the realtive motion and optical characteristcs of the cameras used to accuire images, 
 accodng to an optially reiterion involving the correspsoding image projections of all points.
 
