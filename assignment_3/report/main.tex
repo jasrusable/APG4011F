@@ -2,6 +2,8 @@
 
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{images/}} 
 
 \title{APG4011F Assignment 3}
 \date{07/05/2015}
@@ -21,33 +23,65 @@
 \section{Introduction}
 The purpose of this assignment is to gain an understading into the principles of image restituion and bundle adjustment.
 A python program will be used to demonstrate and simulate how image restituion and bundle adjusment is performed.
+The main tasks of this assignment involve creating appropriate ficticouos data so that an image ray intersection, resection
+and multiple bundle adjustment can be performed. Thereafter, the actual intersection, resection and bundle adjustment will 
+be carried out and results will be compared to the original ficotuous data.
+
 
 \section{Background}
 Image restitution and bundle adjustment has many applications in various fields such as computer vision and photogrammtery. 
-The objective of image restituion is to reconstruct image rays in space, as they existed during the moment of photogrophy. 
+The objective of image restituion is to reconstruct image rays and camera attitude in space, as they existed during the moment of photogrophy. 
 This means that a single image ray will pass through a perspective center, image point, and homologous object point, and so
 in order to reconstruct an image ray, various parameters need to be taken into consideration:
 Perspective center cooridantes, camera tilt/attitude, camera focal length/principle distance, image point coordiante (in the 
 image coordiante system), and correspsond object point coordiante.
-The process of reconstrcuting iamge rays can be broken down into two main parts, namely, interior orientation, and exterior orientation.
+The process of reconstrcuting iamge rays and camera characteristics can be broken down into two main parts, interior and exterior orientation.
+Exterior orientation involves paramters concering the camera, while inerior orientation involves paramters of actual image rays.
 
+\newpage
+
+\subsection{Interior Orientaion}
 Interioer or Inner orientaiobn is described as the reconstruction of the geomerty of th bundle of imagin rays as they exitsted at the time 
 of photogrpay. It is defined by: the calibrated principle distance of the camera, the postion of the principle poing in the image plane, 
 and the gemometric distortion characteristics of the lens system.
 In this assignement, ficticous image and object points will be created such that an intersection, resection and full bundle adjustment 
 can be carried out. 
 
-(interiour orientaion diagrams and equations here)
+\begin{figure}[h!]
+\centering
+\caption{Interior Orientaion dipiction.}
+\includegraphics{interior_diagram}
+\end{figure}
 
+\begin{figure}[h!]
+\centering
+\caption{Interior orientaion equations.}
+\includegraphics[scale=0.3]{interior_equations}
+\end{figure}
+
+\newpage
+
+\subsection{Exterior Orientation}
 Exterour or Outer orirenataion is descibed as the reconstruction of the poiition and attitide of the camera as it existed at the time of
 photogrpahy and is defined by: the posituion of the projection cener, and the rotaion anges for each 3D axis.
 
-(Exterior orientaion diarams and equations here)
+\begin{figure}[h!]
+\centering
+\caption{Exterior Orientaion dipiction.}
+\includegraphics{exterior_diagram}
+\end{figure}
 
+\newpage
+
+\subsection{Collinearity Condition}
 In order to relate these two systems, the collinearity condition is used and it states that assuming no unmodelled image and lens
 distortions, the projection center, object point and correspding image point should lie on a straight line.
 
-(Collineartiy condtion equations here)
+\begin{figure}[h!]
+\centering
+\caption{Collinearity Condition Equations.}
+\includegraphics[scale=0.3]{collinearity_equations}
+\end{figure}
 
 Bundle adjustment can be defined as the simultaneous refining of 3D coordiantes describing a scene geometery as well 
 as the parameters of the realtive motion and optical characteristcs of the cameras used to accuire images, 
@@ -86,7 +120,6 @@ predefined rotations and scales. Then, in order to create the homologous points 
 reprojected to the second image again using the collinearity equations. 
 This resulted in three sets of homoloous points, namely, those in the first images' image system, those in the object system, 
 and those in the second images' image system.
-
 
 \section{Results}
 
