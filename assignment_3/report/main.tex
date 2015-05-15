@@ -87,6 +87,7 @@ Bundle adjustment can be defined as the simultaneous refining of 3D coordiantes 
 as the parameters of the realtive motion and optical characteristcs of the cameras used to accuire images, 
 accodng to an optially reiterion involving the correspsoding image projections of all points.
 
+\newpage
 
 \section{Problem Statement}
 There are three main questions which will be addressed in this assignment. They are listed below:
@@ -106,6 +107,7 @@ Given a set of object points, treat 80\% of them as control, and the remainder a
 Then, use the collinearity equations to set up a least squares adjustment to simultaneously determine the exterior 
 orietation paramters of the two images as well as the object coordinates of the tie points.
 
+\newpage
 
 \section{Method}
 A pyhton program was created which is used to run the various adjustments and calcuations pertaining to the questions 
@@ -120,6 +122,25 @@ predefined rotations and scales. Then, in order to create the homologous points 
 reprojected to the second image again using the collinearity equations. 
 This resulted in three sets of homoloous points, namely, those in the first images' image system, those in the object system, 
 and those in the second images' image system.
+
+\subsection{Intersection}
+The intersection in the context of image resititution and bundle adjustment, requires two perspective centers(two images), 
+each which contain the same object point in them. 
+This allows for two imaging rays to be constructed and intersected which allows for the determination of the interesection poins coordinates.
+An imaging ray passes through a perspective center, image point, and object point once interior and exterior orientaion has taken place.
+Given that three sets of perfectly homologuos points had been created, small random errors where added to the second iamges' image points 
+to allow for a meaningful comparasion of the results of the intersected object points to the existing object points.
+
+\begin{figure}[h!]
+\centering
+\caption{Intersection.}
+\includegraphics[scale=0.2]{intersection}
+\end{figure}
+
+
+\subsection{Resection}
+
+
 
 \section{Results}
 
