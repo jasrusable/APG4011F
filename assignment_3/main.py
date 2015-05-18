@@ -97,7 +97,7 @@ def populate_vectors_to_plot_list():
                 vectors_to_plot.append(Vector(from_point=image_point.image.perspective_center, to_point=object_point))
 populate_vectors_to_plot_list()
 
-#plot(vectors_to_plot, points_to_plot)
+plot(vectors_to_plot, points_to_plot)
 
 
 def resection(image_points, prov_X0, prov_Y0, prov_Z0, prov_rx, prov_ry, prov_rz):
