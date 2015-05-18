@@ -1,6 +1,6 @@
 \contentsline {section}{\numberline {1}Introduction}{2}
 \contentsline {section}{\numberline {2}Background}{2}
-\contentsline {subsection}{\numberline {2.1}Interior Orientaion}{3}
+\contentsline {subsection}{\numberline {2.1}Interior Orientation}{3}
 \contentsline {subsection}{\numberline {2.2}Exterior Orientation}{4}
 \contentsline {subsection}{\numberline {2.3}Collinearity Condition}{5}
 \contentsline {section}{\numberline {3}Problem Statement}{6}
@@ -8,7 +8,7 @@
 \contentsline {subsection}{\numberline {3.2}Resection}{6}
 \contentsline {subsection}{\numberline {3.3}Bundle Adjustment}{6}
 \contentsline {section}{\numberline {4}Method}{7}
-\contentsline {subsection}{\numberline {4.1}Creating ficticous Object Points}{7}
+\contentsline {subsection}{\numberline {4.1}Creating fictitious Object Points}{7}
 \contentsline {subsection}{\numberline {4.2}Intersection}{7}
 \contentsline {subsection}{\numberline {4.3}Resection}{8}
 \contentsline {section}{\numberline {5}Results}{8}
